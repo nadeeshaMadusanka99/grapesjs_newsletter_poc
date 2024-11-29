@@ -1,0 +1,10 @@
+.DS_Store
+private/
+node_modules/
+dist/
+locale/
+.eslintrc
+.npmrc
+*.log
+_index.html
+.idea
