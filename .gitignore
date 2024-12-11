@@ -8,3 +8,8 @@ locale/
 *.log
 _index.html
 .idea
+
+.env
+.env.local
+
+API Keys.txt
