@@ -138,12 +138,16 @@
         </mj-body>
       </mjml>
     </div>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <button id="sendEmailBtn" style="margin: 10px; padding: 10px">Send Email</button>
+    </div>
 
     <script type="text/javascript">
       window.onload = () => {
-        window.editor = grapesjs.init({
+        const editor = grapesjs.init({
+          container: '#gjs',
           height: '100%',
-          noticeOnUnload: false,
+          noticeOnUnload: true,
           storageManager: {
             type: 'local',
             autosave: true,
@@ -160,6 +164,35 @@
           pluginsOpts: {
             'grapesjs-mjml': {},
           },
+        });
+
+        document.getElementById('sendEmailBtn').addEventListener('click', () => {
+          const emailHtml = editor.getHtml();
+
+          const payloadSize = new Blob([JSON.stringify({ htmlContent: emailHtml })]).size;
+
+          if (payloadSize > 10 * 1024 * 1024) {
+            alert('The email content is too large. Please reduce the size.');
+            return;
+          }
+
+          fetch('http://localhost:4000/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ htmlContent: emailHtml, recipient: 'kailyn.barrows@ethereal.email' }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert(data.message);
+              } else {
+                alert(data.error);
+                console.error(data.error);
+              }
+            })
+            .catch((error) => {
+              console.error('Error sending email:', error);
+            });
         });
       };
     </script>
