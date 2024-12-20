@@ -17,23 +17,6 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-// app.get("/", async (req, res) => {
-//   console.log('inside GET /');
-//   const { data, error } = await resend.emails.send({
-//     from: "Acme <onboarding@resend.dev>",
-//     to: ["nadeeshamadusanka44@gmail.com"],
-//     subject: "hello world",
-//     html: "<strong>it works!</strong>",
-//   });
-
-//   if (error) {
-//     console.log('error:', error);
-//     return res.status(400).json({ error });
-//   }
-
-//   res.status(200).json({ data });
-// });
-
 app.post('/send-email', async (req, res) => {
   const { htmlContent, recipient } = req.body;
 
